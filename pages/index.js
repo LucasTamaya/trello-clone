@@ -12,10 +12,10 @@ export default function Home() {
         {/* Header right */}
         <div className="flex items-center gap-x-4">
           <Link href="/login">
-            <button className="text-sky-600 font-bold">Log in</button>
+            <button className="text-blue-600 font-bold">Log in</button>
           </Link>
           <Link href="/signup">
-            <button className="bg-sky-600 p-2 rounded text-white font-bold">
+            <button className="bg-blue-600 p-2 rounded text-white font-bold">
               Sign up
             </button>
           </Link>
