@@ -5,7 +5,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 
 const Header = ({ setShowCreateBoard }) => {
   return (
-    <header className="w-screen h-10 bg-blue-600 px-2 py-7">
+    <header className="w-screen h-[10vh] bg-blue-600 px-2 py-7">
       <div className="max-w-6xl h-full mx-auto flex items-center lg:justify-between">
         <div className="flex items-center gap-x-5">
           <DashboardCustomizeIcon className="text-white cursor-pointer" />

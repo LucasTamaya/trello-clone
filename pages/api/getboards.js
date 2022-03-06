@@ -4,12 +4,12 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // récupère l'id de l'utilisateur
-  const { userId } = req.query;
+  const { id } = req.query;
 
   // récupère tous les tableaux créent par l'utilisateur dans la base de donnée et renvoit la data au frontend
   const userBoards = await db
     .collection("boards")
-    .find({ userId: userId })
+    .find({ userId: id })
     .toArray((err, data) => {
       if (err) {
         console.log(err);

@@ -7,8 +7,22 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const CreateBoard = ({ setShowCreateBoard }) => {
   const [input, setInput] = useState("");
   const [isFulfilled, setIsFulfilled] = useState(false);
-  
+
   const router = useRouter();
+
+  const boardColors = [
+    "bg-red-400",
+    "bg-orange-400",
+    "bg-lime-400",
+    "bg-green-400",
+    "bg-cyan-400",
+    "bg-fuchsia-400",
+  ];
+
+  // génère un nombre aléatoire entre 0 et la taille du tableau boardColors
+  const randomNb = () => {
+    return Math.floor(Math.random() * boardColors.length);
+  };
 
   //   fonction qui envoit la data à l'API afin de créer le nouveau tableau
   const handleCreateBoard = async () => {
@@ -20,16 +34,17 @@ const CreateBoard = ({ setShowCreateBoard }) => {
       const data = await axios.post(`${template}api/createboard`, {
         boardTitle: input,
         userId: localStorage.getItem("userId"),
+        boardColor: boardColors[randomNb()],
       });
 
-      console.log(data)
+      console.log(data);
 
       if (data.data.message === "CreateBoardError") {
         alert("Error, please try again");
       }
 
       if (data.data.message === "NoError") {
-        router.push(`/board/${data.data.boardId}`)
+        router.push(`/board/${data.data.boardId}`);
       }
     }
   };

@@ -1,9 +1,10 @@
 import axios from "axios";
 
-// hook perso qui permet de fetch de la data depuis une url et des paramètres données
-const useFetch = async (url, userId) => {
+// hook perso qui permet de fetch de la data depuis une url et un id donné
+const useFetch = async (url, id) => {
+  console.log(id)
   
-  const data = await axios.get(url, { params: { userId: userId } });
+  const data = await axios.get(url, { params: { id: id } });
 
   return data;
 };
