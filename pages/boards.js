@@ -1,14 +1,25 @@
-import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import Link from "next/link";
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <nav>
-        <Image src="/logo.svg" alt="trello logo" height="42" width="168" />
-      </nav>
+import Header from "../components/Header";
+import BoardsComponent from "../components/BoardsComponent";
+import CreateBoard from "../components/CreateBoard";
+import { useState, useEffect } from "react";
 
-      <h3>Boards created by User</h3>
-    </div>
+export default function Boards() {
+  const [showCreateBoard, setShowCreateBoard] = useState(false);
+
+  // permet d'ouvrir et de fermer le module de création de tableau
+  useEffect(() => {
+    console.log(showCreateBoard);
+  }, [showCreateBoard]);
+
+  return (
+    <>
+      <Header setShowCreateBoard={setShowCreateBoard} />
+      <BoardsComponent setShowCreateBoard={setShowCreateBoard} />
+      {showCreateBoard && (
+        <CreateBoard setShowCreateBoard={setShowCreateBoard} />
+      )}
+    </>
   );
 }

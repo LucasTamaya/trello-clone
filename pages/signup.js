@@ -20,19 +20,18 @@ export default function Signup() {
   });
 
   const handleRegister = async (input) => {
-    const res = await axios.post(`${template}api/signup`, {
+    const data = await axios.post(`${template}api/signup`, {
       email: input.email,
       name: input.name,
       password: input.password,
     });
-
-    const data = await res;
 
     if (data.data.message === "ExistingEmailError") {
       alert("email existant");
     }
 
     if (data.data.message === "NoError") {
+      localStorage.setItem("userId", data.data.userId);
       router.push("/boards")
     }
   };

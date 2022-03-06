@@ -5,7 +5,6 @@ export default async function handler(req, res) {
   // connexion à la base de donnée
   const { db } = await connectToDatabase();
   const { email, name, password } = req.body;
-  console.log(email, name, password);
 
   //   vérifie que l'email n'existe pas dans MongoDB
   const existingEmail = await db
@@ -34,6 +33,9 @@ export default async function handler(req, res) {
       password: hashPassword,
     });
 
-    res.status(200).send({message: "NoError"});
+    // récupère l'id de l'utilisateur
+    const userId = newUser.insertedId;
+
+    res.status(200).send({ message: "NoError", userId: userId });
   }
 }

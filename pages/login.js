@@ -20,18 +20,17 @@ export default function Login() {
   });
 
   const handleRegister = async (input) => {
-    const res = await axios.post(`${template}api/login`, {
+    const data = await axios.post(`${template}api/login`, {
       email: input.email,
       password: input.password,
     });
-
-    const data = await res;
 
     if (data.data.message === "LoginError") {
       alert("Email ou mot de passe incorrect");
     }
 
     if (data.data.message === "NoError") {
+      localStorage.setItem("userId", data.data.userId);
       router.push("/boards");
     }
   };
@@ -109,7 +108,12 @@ export default function Login() {
           Log in
         </button>
         <p className="text-xs text-blue-600 text-center">
-          Can't log in? <Link href="/login"><span className="font-bold cursor-pointer">Sign up for an account</span></Link>
+          Can't log in?{" "}
+          <Link href="/signup">
+            <span className="font-bold cursor-pointer">
+              Sign up for an account
+            </span>
+          </Link>
         </p>
       </form>
       <img
