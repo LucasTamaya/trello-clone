@@ -4,43 +4,56 @@ import AddNewList from "./AddNewList";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import List from "./List";
 import { DragDropContext } from "react-beautiful-dnd";
-import template from "../utils/template";
-import useFetch from "../hooks/useFetch";
-
-const Tasks = ({ boardId }) => {
-  const [lists, setLists] = useState([]);
-
-  useEffect(() => {
-    // setLoading(true);
-    useFetch(`${template}api/board`, boardId).then((data) => {
-      setLists(data.data.lists);
-      // setLoading(false);
-    });
-  }, []);
+import { DesignServices } from "@mui/icons-material";
+import mapOrder from "../utils/mapOrder";
+const Tasks = ({ lists }) => {
 
   const onDragEnd = (result) => {
-    console.log("dragging")
-    // if (result.reason === "DROP") {
-    //   if (!result.destination) {
-    //     return;
-    //   }
-    //   dispatch({
-    //     type: "MOVE",
-    //     from: result.source.droppableId,
-    //     to: result.destination.droppableId,
-    //     fromIndex: result.source.index,
-    //     toIndex: result.destination.index,
-    //   });
-    // }
+    const { destination, source, draggableId } = result;
+
+    // si je bouge un élément en dehors de la zone Droppable
+    if (!destination) {
+      return;
+    }
+
+    // si je bouge un élément et je le remet à sa position initiale
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    console.log(destination);
+    console.log(source);
+    console.log(draggableId);
+
+    // si je bouge correctement les éléments
+    // récupère la liste dans laquelle on a bougé les éléments
+    const list = lists.filter((x) => x.listId === source.droppableId);
+    console.log("Voila la liste qui a bougé", list);
+
+    // récupère les ids des tâches de cette liste
+    const newCardIds = list[0].cards.map((x) => x.cardId);
+    console.log("Voila les ids des taches de cette liste: ", newCardIds);
+
+    const newCardsOrder = list[0].cards;
+
+    // on remplace les positions des éléments qui ont bougés
+    newCardIds.splice(source.index, 1);
+    newCardIds.splice(destination.index, 0, draggableId);
+    console.log(newCardIds);
+
+    // on créé une copie la liste des tâches modifiées
+    mapOrder(newCardsOrder, newCardIds, "cardId");
   };
 
   return (
     <div className="flex justify-between">
-      {/* <DragDropContext onDragEnd={onDragEnd}> */}
+      <DragDropContext onDragEnd={onDragEnd}>
         {lists.map((x) => {
           return <List key={x.listId} list={x} tasks={x.cards} />;
         })}
-      {/* </DragDropContext> */}
+      </DragDropContext>
     </div>
 
     // {/* A la réception de la data: affiche toutes les listes du tableau */}
