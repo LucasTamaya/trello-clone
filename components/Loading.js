@@ -2,7 +2,7 @@ import styles from "../styles/Loading.module.css";
 
 const Loading = () => {
   return (
-    <div class={styles.ldsRing}>
+    <div className={styles.ldsRing}>
       <div></div>
       <div></div>
       <div></div>

@@ -7,16 +7,12 @@ export default async function handler(req, res) {
   //   récupère l'id du tableau
   const { id } = req.query;
 
-  console.log(req)
-
-  console.log("voila l'id", id);
-
   const boardData = await db
     .collection("boards")
     .find({ _id: new ObjectId(id) })
     .toArray((err, data) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         return res.send({ message: "BoardDataError" });
       }
 

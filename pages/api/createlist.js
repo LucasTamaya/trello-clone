@@ -20,4 +20,11 @@ export default async function handler(req, res) {
       },
     }
   );
+
+  if (newList.modifiedCount === 0) {
+    return res.send({ message: "CreateListError" });
+  }
+  if (newList.modifiedCount !== 0) {
+    return res.send({ message: "NoError" });
+  }
 }

@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Loading from "./Loading";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import template from "../utils/template";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
-const AddNewList = ({ boardId }) => {
+const AddNewList = ({ boardId, setLists }) => {
   // permet d'ouvrir et de ferme le petit module afin de saisir le titre de la liste
   const [showInput, setShowInput] = useState(false);
-
-  const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const [inputList, setInputList] = useState("");
 
@@ -21,33 +17,49 @@ const AddNewList = ({ boardId }) => {
       return;
     }
     if (inputList !== "") {
-      axios.post(`${template}api/createlist`, {
+      // rénitialisation de l'input
+      setInputList("");
+
+      // ajout dynamique de la liste avec un id intermédiaire
+      setLists((prev) => [...prev, { listId: uuidv4(), listTitle: inputList }]);
+
+      // envoit de la data à l'api
+      const data = await axios.post(`${template}api/createlist`, {
         listTitle: inputList,
         boardId: boardId,
       });
+
+      // si erreur pendant la création de la nouvelle liste, afficher un message d'erreur
+      if (data.data.message === "CreateListError") {
+        alert("something went wrong...");
+      }
+
+      // si aucun erreur lors de l'ajout de la liste, on return
+      if (data.data.message === "NoError") {
+        return;
+      }
     }
   };
 
   return (
-    //
-    <div>
+    <>
       <div className="flex items-center w-60">
         <label
           htmlFor="inputList"
-          className={`flex items-center w-60 p-2 bg-gray-100/40 gap-x-2 w-fit rounded text-white cursor-pointer ${
+          className={`flex items-center p-2 bg-gray-100/50 gap-x-2 w-fit rounded text-white cursor-pointer ${
             showInput && "hidden"
           }`}
           onClick={() => setShowInput(true)}
         >
           <AddIcon className="text-white" />
-          <p>Add a new list</p>
+          <p className="w-60">Add a new list</p>
         </label>
         <div
           className={`bg-gray-100/40 p-1 rounded ${
             !showInput ? "hidden" : "block"
           }`}
         >
-          <form onSubmit={handleNewList}>
+          <form onSubmit={handleNewList} className="w-60">
             <input
               id="inputList"
               type="text"
@@ -74,8 +86,7 @@ const AddNewList = ({ boardId }) => {
           </form>
         </div>
       </div>
-    </div>
-    // </main>
+    </>
   );
 };
 

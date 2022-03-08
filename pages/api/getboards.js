@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       }
 
       if (!err) {
-        console.log(data);
+        // console.log(data);
         return res.status(200).send({ message: "NoError", userBoards: data });
       }
     });
