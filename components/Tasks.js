@@ -1,16 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import AddNewList from "./AddNewList";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import List from "./List";
 import { DragDropContext } from "react-beautiful-dnd";
-import { DesignServices } from "@mui/icons-material";
 import mapOrder from "../utils/mapOrder";
 const Tasks = ({ lists }) => {
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
-    // si je bouge un élément en dehors de la zone Droppable
+    // si je bouge un élément en dehors des zones droppable
     if (!destination) {
       return;
     }
@@ -27,7 +23,7 @@ const Tasks = ({ lists }) => {
     const finish = lists.filter((x) => x.listId === destination.droppableId);
 
     // console.log(destination);
-    console.log(source);
+    // console.log(source);
     // console.log(draggableId);
 
     // si je bouge les éléments à l'intérieur de la même liste
@@ -53,7 +49,6 @@ const Tasks = ({ lists }) => {
 
     // si je bouge les éléments dans une autre liste
     if (start[0].listId !== finish[0].listId) {
-
       // récupère l'élément qu'on souhaite déplacer
       const movingCard = start[0].cards[source.index];
       console.log("element a deplace", movingCard);
@@ -61,55 +56,25 @@ const Tasks = ({ lists }) => {
       // supprime l'élément qu'on déplace de la liste source
       start[0].cards.splice(source.index, 1);
 
-      // liste de tâches de la liste de destination
+      // récupère la liste de tâches de la liste de destination
       const finishCards = finish[0].cards;
       console.log("liste de destination: ", finishCards);
 
       // ajout du nouvel élément à la liste de destination
-      finishCards.push(movingCard)
-
-      // const finishCardIds = finishCardsOrder.map((x) => x.cardId);
-
-      // finishCardIds.splice(destination.index, 0, draggableId);
-      // // console.log(draggableId)
-      // // console.log("finish cards id: ", finishCardIds)
-      // // on créé une copie la liste des tâches modifiées
-      // mapOrder(finishCardsOrder, finishCardIds, "cardId");
+      finishCards.push(movingCard);
     }
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between gap-x-2">
       <DragDropContext onDragEnd={onDragEnd}>
-        {lists.map((x) => {
-          return <List key={x.listId} list={x} tasks={x.cards} />;
-        })}
+        {lists.map((x, index) => (
+          <div className="flex items-start bg-white rounded p-4 h-fit">
+            <List key={x.listId} list={x} tasks={x.cards} index={index} />
+          </div>
+        ))}
       </DragDropContext>
     </div>
-
-    // {/* A la réception de la data: affiche toutes les listes du tableau */}
-    // {/* {lists.length > 0 && (
-    //   <ul className="flex items-start gap-x-2">
-    //     {lists.map((x) => (
-    //       <li
-    //         key={x.listId}
-    //         className="text-blue-900 font-bold p-2 rounded bg-[rgb(235,236,240)] cursor-pointer"
-    //       >
-    //         <div className="w-80">
-    //           <div className="flex justify-between">
-    //             <h2>{x.listTitle}</h2>
-    //             <MoreHorizIcon />
-    //           </div>
-    //           <ul className="mt-2">
-    //             <li className="w-full h-fit p-2 text-blue-900 bg-white rounded">
-    //               Voila la description de la tache{" "}
-    //             </li>
-    //           </ul>
-    //         </div>
-    //       </li>
-    //     ))}
-    //   </ul>
-    // )} */}
   );
 };
 

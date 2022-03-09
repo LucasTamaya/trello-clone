@@ -46,20 +46,20 @@ const AddNewList = ({ boardId, setLists }) => {
       <div className="flex items-center w-60">
         <label
           htmlFor="inputList"
-          className={`flex items-center p-2 bg-gray-100/50 gap-x-2 w-fit rounded text-white cursor-pointer ${
+          className={`flex items-center p-2 bg-gray-400/40 gap-x-2 w-fit rounded text-blue-900 cursor-pointer hover:bg-gray-400 ${
             showInput && "hidden"
           }`}
           onClick={() => setShowInput(true)}
         >
-          <AddIcon className="text-white" />
+          <AddIcon className="text-blue-900" />
           <p className="w-60">Add a new list</p>
         </label>
         <div
-          className={`bg-gray-100/40 p-1 rounded ${
+          className={`bg-white p-1 rounded ${
             !showInput ? "hidden" : "block"
           }`}
         >
-          <form onSubmit={handleNewList} className="w-60">
+          <form onSubmit={handleNewList}>
             <input
               id="inputList"
               type="text"

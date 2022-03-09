@@ -62,7 +62,7 @@ const CreateBoard = ({ setShowCreateBoard }) => {
 
   return (
     <div className="absolute top-0 left-0 w-screen h-screen bg-gray-200/70 flex justify-center items-center">
-      <div className="w-80 h-fit bg-white p-4 lg:w-96">
+      <div className="w-80 h-fit bg-white p-4 lg:w-96 rounded">
         <div className="flex w-full flex justify-end">
           <CloseOutlinedIcon
             className="text-blue-900 cursor-pointer"

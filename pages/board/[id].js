@@ -6,10 +6,14 @@ import useFetch from "../../hooks/useFetch";
 import template from "../../utils/template";
 import Loading from "../../components/Loading";
 import AddNewList from "../../components/AddNewList";
+import AddNewCardModal from "../../components/AddNewCardModal";
 
 export default function SingleBoard({ boardId }) {
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte
+  // const [showAddNewCardModal, setShowAddNewCardModal] = useState(false);
 
   // récupère les listes et les cards d'un tableau donné au premier montage du composant
   useEffect(() => {
@@ -29,11 +33,14 @@ export default function SingleBoard({ boardId }) {
             <Loading />
           </div>
         )}
-        <div className="h-[90vh] p-7 bg-[rgb(208,202,192)] flex items-start gap-x-2 flex-nowrap overflow-x-auto">
+        <div className="h-[90vh] p-7 bg-[rgb(235,236,240)] flex items-start gap-x-2 flex-nowrap overflow-x-auto">
           <Tasks lists={lists} />
           {!loading && <AddNewList boardId={boardId} setLists={setLists} />}
         </div>
       </main>
+      {/* <div className="absolute left-0 top-0 justify-center items-center">
+        <AddNewCardModal />
+      </div> */}
     </div>
   );
 }

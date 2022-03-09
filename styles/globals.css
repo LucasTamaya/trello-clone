@@ -18,7 +18,6 @@ a {
   padding: 0;
   box-sizing: border-box;
 }
-
 /* Scollbar */
 ::-webkit-scrollbar {
   height: 12px;
