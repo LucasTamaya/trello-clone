@@ -1,19 +1,14 @@
 import template from "../utils/template";
 import { useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
-import mongoObjectId from "../utils/mongodbIdGenerator";
 import InboxIcon from "@mui/icons-material/Inbox";
 import CloseIcon from "@mui/icons-material/Close";
 import DescriptionIcon from "@mui/icons-material/Description";
+import mongoObjectId from "../utils/mongodbIdGenerator";
 
-const AddNewCardModal = ({
-  index,
-  listId,
-  listTitle,
-  setShowAddNewCardModal,
-  setNewTasks,
-}) => {
+// Composant afin d'ajouter une nouvelle carte à la liste du board
+
+const AddNewCardModal = ({ listId, setCard, setShowAddNewCardModal }) => {
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
 
@@ -26,15 +21,23 @@ const AddNewCardModal = ({
     }
 
     if (cardTitle !== "" && cardDescription !== "") {
-      const cardId = mongoObjectId()
+      // création d'un id valide avec mongoDB
+      const mongoDbId = mongoObjectId();
 
-      const data = await axios.post(`${template}api/createcard`, {
-        index: index,
+      const newCard = {
+        _id: mongoDbId,
         listId: listId,
-        cardId: cardId,
         cardTitle: cardTitle,
         cardDescription: cardDescription,
-      });
+      };
+
+      // ajout de la nouvelle carte à la liste correspondante
+      setCard((prev) => [...prev, newCard]);
+
+      // fermeture du modale d'ajout de carte
+      setShowAddNewCardModal(false);
+
+      const data = await axios.post(`${template}api/createcard`, newCard);
 
       if (data.data.message === "CreateCardError") {
         alert("something went wrong");
@@ -42,15 +45,7 @@ const AddNewCardModal = ({
       }
 
       if (data.data.message === "NoError") {
-        setNewTasks((prev) => [
-          ...prev,
-          {
-            cardId: cardId,
-            cardTitle: cardTitle,
-            cardDescription: cardDescription,
-          },
-        ]);
-        setShowAddNewCardModal(false);
+        return;
       }
     }
   };

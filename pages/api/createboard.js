@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   const newBoard = await db.collection("boards").insertOne({
     boardTitle: boardTitle,
     userId: userId,
-    lists: [],
     boardColor: boardColor,
   });
 

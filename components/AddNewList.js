@@ -5,7 +5,7 @@ import template from "../utils/template";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
-const AddNewList = ({ boardId, setLists }) => {
+const AddNewList = ({ boardId, setBoardLists }) => {
   // permet d'ouvrir et de ferme le petit module afin de saisir le titre de la liste
   const [showInput, setShowInput] = useState(false);
 
@@ -20,23 +20,27 @@ const AddNewList = ({ boardId, setLists }) => {
       // rénitialisation de l'input
       setInputList("");
 
-      const listId = mongoObjectId();
+      // création d'un id valide avec mongoDB
+      const mongoDbId = mongoObjectId();
 
-      // ajout dynamique de la liste avec un id intermédiaire
-      setLists((prev) => [...prev, { listId: listId, listTitle: inputList }]);
-
-      // envoit de la data à l'api
-      const data = await axios.post(`${template}api/createlist`, {
+      const newList = {
+        _id: mongoDbId,
         listTitle: inputList,
         boardId: boardId,
-      });
+      };
+
+      // ajout de la nouvelle liste au board
+      setBoardLists((prev) => [...prev, newList]);
+
+      // envoit de la data à l'api
+      const data = await axios.post(`${template}api/createlist`, newList);
 
       // si erreur pendant la création de la nouvelle liste, afficher un message d'erreur
       if (data.data.message === "CreateListError") {
         alert("something went wrong...");
       }
 
-      // si aucun erreur lors de l'ajout de la liste, on return
+      // si aucun erreur on ajoute la nouvelle liste au board
       if (data.data.message === "NoError") {
         return;
       }
@@ -57,9 +61,7 @@ const AddNewList = ({ boardId, setLists }) => {
           <p className="w-60">Add a new list</p>
         </label>
         <div
-          className={`bg-white p-1 rounded ${
-            !showInput ? "hidden" : "block"
-          }`}
+          className={`bg-white p-1 rounded ${!showInput ? "hidden" : "block"}`}
         >
           <form onSubmit={handleNewList}>
             <input

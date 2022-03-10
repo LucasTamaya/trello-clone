@@ -5,17 +5,27 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddNewCard from "./AddNewCard";
 import { useState, useEffect } from "react";
 import AddNewCardModal from "./AddNewCardModal";
+import useFetch from "../hooks/useFetch";
+import template from "../utils/template";
 
-const List = ({ list, tasks, index }) => {
+// Composant représentant un liste du board
 
-  const [newTasks, setNewTasks] = useState( tasks || [])
-
-  useEffect(() => {
-    newTasks.map(x => console.log(x.cards))
-  }, [newTasks])
+const List = ({ list, index }) => {
+  const [card, setCard] = useState([]);
 
   // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte
   const [showAddNewCardModal, setShowAddNewCardModal] = useState(false);
+
+  useEffect(() => {
+    useFetch(`${template}api/getcards`, list._id).then((data) => {
+      console.log(data);
+      setCard(data.data.cardData);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(card);
+  }, [card]);
 
   return (
     <div className="w-80">
@@ -24,20 +34,20 @@ const List = ({ list, tasks, index }) => {
         <MoreHorizIcon className="text-blue-900" />
       </div>
 
-      <Droppable droppableId={list.listId}>
+      <Droppable droppableId={list._id}>
         {(provided) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
             className="text-blue-900 font-bold rounded cursor-pointer"
           >
-            {!newTasks ? (
+            {!card ? (
               <></>
             ) : (
-              newTasks.map((x, index) => (
+              card.map((x, index) => (
                 <Card
-                  key={x.cardId}
-                  id={x.cardId}
+                  key={x._id}
+                  id={x._id}
                   title={x.cardTitle}
                   description={x.cardDescription}
                   index={index}
@@ -45,11 +55,23 @@ const List = ({ list, tasks, index }) => {
               ))
             )}
             {provided.placeholder}
+
+            {/* Bouton afin d'ouvrir le modal d'ajout de card */}
             <AddNewCard setShowAddNewCardModal={setShowAddNewCardModal} />
           </div>
         )}
       </Droppable>
-      {!showAddNewCardModal ? <></> : <AddNewCardModal index={index} listId={list.listId} listTitle={list.listTitle} setShowAddNewCardModal={setShowAddNewCardModal} setNewTasks={setNewTasks} />}
+
+      {/* Modal d'ajout de card */}
+      {!showAddNewCardModal ? (
+        <></>
+      ) : (
+        <AddNewCardModal
+          listId={list._id}
+          setCard={setCard}
+          setShowAddNewCardModal={setShowAddNewCardModal}
+        />
+      )}
     </div>
   );
 };

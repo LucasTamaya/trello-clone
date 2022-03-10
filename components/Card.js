@@ -2,8 +2,10 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 const Card = ({ id, title, description, index }) => {
-  // console.log(id);
-  // console.log(index);
+
+  console.log(id)
+  console.log(title)
+  console.log(index)
 
   return (
     <div className="mt-2">

@@ -4,12 +4,13 @@ import mongodb, { ObjectId } from "mongodb";
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
-  //   récupère l'id du tableau
+  //   récupère l'id du board
   const { id } = req.query;
 
-  const boardData = await db
-    .collection("boards")
-    .find({ _id: new ObjectId(id) })
+  // récupère toutes les listes du board
+  const boardLists = await db
+    .collection("lists")
+    .find({ boardId: new ObjectId(id) })
     .toArray((err, data) => {
       if (err) {
         // console.log(err);
@@ -18,8 +19,7 @@ export default async function handler(req, res) {
 
       if (!err) {
         // console.log(data);
-        // console.log("data precise: ", data[0].lists)
-        return res.status(200).send({ message: "NoError", lists: data[0].lists });
+        return res.status(200).send({ message: "NoError", boardLists: data });
       }
     });
 }
