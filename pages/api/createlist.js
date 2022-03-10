@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   //   récupère le titre de la nouvelle liste
-  const { listTitle, boardId } = req.body;
+  const { listId, listTitle, boardId } = req.body;
 
   //   ajoute la nouvelle liste dans le tableau correspondant dans la base de donnée
   const newList = await db.collection("boards").updateOne(
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     {
       $push: {
         lists: {
-          listId: new ObjectId(),
+          listId: listId,
           listTitle: listTitle,
           cards: [],
         },

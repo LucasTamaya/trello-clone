@@ -69,8 +69,8 @@ const Tasks = ({ lists }) => {
     <div className="flex justify-between gap-x-2">
       <DragDropContext onDragEnd={onDragEnd}>
         {lists.map((x, index) => (
-          <div className="flex items-start bg-white rounded p-4 h-fit">
-            <List key={x.listId} list={x} tasks={x.cards} index={index} />
+          <div key={x.listId} className="flex items-start bg-white rounded p-4 h-fit">
+            <List list={x} tasks={x.cards} index={index} />
           </div>
         ))}
       </DragDropContext>

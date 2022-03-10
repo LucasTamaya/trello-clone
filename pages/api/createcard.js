@@ -4,7 +4,7 @@ import mongodb, { ObjectId } from "mongodb";
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
-  const { index, listId, cardTitle, cardDescription } = req.body;
+  const { index, listId, cardId, cardTitle, cardDescription } = req.body;
 
   console.log(index);
 
@@ -13,15 +13,21 @@ export default async function handler(req, res) {
   };
 
   // ajoute la nouvelle carte à la liste correspondant à l'id donné
-  db.collection("boards").updateOne(filter, {
+  const newCard = await db.collection("boards").updateOne(filter, {
     $push: {
       "lists.$.cards": {
-        cardId: new ObjectId(),
+        cardId: cardId,
         cardTitle: cardTitle,
         cardDescription: cardDescription,
       },
     },
   });
+  if (newCard.modifiedCount === 0) {
+    return res.send({ message: "CreateCardError" });
+  }
+  if (newCard.modifiedCount !== 0) {
+    return res.send({ message: "NoError" });
+  }
 }
 
 /*

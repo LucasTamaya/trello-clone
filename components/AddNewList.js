@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import mongoObjectId from "../utils/mongodbIdGenerator";
 import template from "../utils/template";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,8 +20,10 @@ const AddNewList = ({ boardId, setLists }) => {
       // rénitialisation de l'input
       setInputList("");
 
+      const listId = mongoObjectId();
+
       // ajout dynamique de la liste avec un id intermédiaire
-      setLists((prev) => [...prev, { listId: uuidv4(), listTitle: inputList }]);
+      setLists((prev) => [...prev, { listId: listId, listTitle: inputList }]);
 
       // envoit de la data à l'api
       const data = await axios.post(`${template}api/createlist`, {

@@ -3,10 +3,16 @@ import Card from "./Card";
 import { Droppable } from "react-beautiful-dnd";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddNewCard from "./AddNewCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddNewCardModal from "./AddNewCardModal";
 
 const List = ({ list, tasks, index }) => {
+
+  const [newTasks, setNewTasks] = useState( tasks || [])
+
+  useEffect(() => {
+    newTasks.map(x => console.log(x.cards))
+  }, [newTasks])
 
   // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte
   const [showAddNewCardModal, setShowAddNewCardModal] = useState(false);
@@ -25,10 +31,10 @@ const List = ({ list, tasks, index }) => {
             {...provided.droppableProps}
             className="text-blue-900 font-bold rounded cursor-pointer"
           >
-            {!tasks ? (
+            {!newTasks ? (
               <></>
             ) : (
-              tasks.map((x, index) => (
+              newTasks.map((x, index) => (
                 <Card
                   key={x.cardId}
                   id={x.cardId}
@@ -43,7 +49,7 @@ const List = ({ list, tasks, index }) => {
           </div>
         )}
       </Droppable>
-      {!showAddNewCardModal ? <></> : <AddNewCardModal index={index} listId={list.listId} listTitle={list.listTitle} setShowAddNewCardModal={setShowAddNewCardModal} />}
+      {!showAddNewCardModal ? <></> : <AddNewCardModal index={index} listId={list.listId} listTitle={list.listTitle} setShowAddNewCardModal={setShowAddNewCardModal} setNewTasks={setNewTasks} />}
     </div>
   );
 };

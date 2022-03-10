@@ -1,6 +1,8 @@
 import template from "../utils/template";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
+import mongoObjectId from "../utils/mongodbIdGenerator";
 import InboxIcon from "@mui/icons-material/Inbox";
 import CloseIcon from "@mui/icons-material/Close";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -10,6 +12,7 @@ const AddNewCardModal = ({
   listId,
   listTitle,
   setShowAddNewCardModal,
+  setNewTasks,
 }) => {
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
@@ -23,12 +26,32 @@ const AddNewCardModal = ({
     }
 
     if (cardTitle !== "" && cardDescription !== "") {
+      const cardId = mongoObjectId()
+
       const data = await axios.post(`${template}api/createcard`, {
         index: index,
         listId: listId,
+        cardId: cardId,
         cardTitle: cardTitle,
         cardDescription: cardDescription,
       });
+
+      if (data.data.message === "CreateCardError") {
+        alert("something went wrong");
+        setShowAddNewCardModal(false);
+      }
+
+      if (data.data.message === "NoError") {
+        setNewTasks((prev) => [
+          ...prev,
+          {
+            cardId: cardId,
+            cardTitle: cardTitle,
+            cardDescription: cardDescription,
+          },
+        ]);
+        setShowAddNewCardModal(false);
+      }
     }
   };
 
