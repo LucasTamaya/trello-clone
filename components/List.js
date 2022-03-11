@@ -13,9 +13,9 @@ import template from "../utils/template";
 const List = ({ column, taskIds, tasks, index, data, setData }) => {
   // const [card, setCard] = useState([]);
 
-  console.log(column);
-  console.log(taskIds);
-  console.log(tasks);
+  // console.log(column);
+  // console.log("ids taches", taskIds);
+  // console.log("toutes les taches", tasks);
 
   // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte
   const [showAddNewCardModal, setShowAddNewCardModal] = useState(false);

@@ -6,6 +6,7 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import CloseIcon from "@mui/icons-material/Close";
 import DescriptionIcon from "@mui/icons-material/Description";
 import mongoObjectId from "../utils/mongodbIdGenerator";
+import update from "react-addons-update";
 
 // Composant afin d'ajouter une nouvelle carte à la liste du board
 
@@ -40,17 +41,18 @@ const AddNewCardModal = ({
         index: index,
       };
 
-      // ajout de la nouvelle carte à la liste correspondante
-      setData({ ...data, tasks: [...data.tasks, newCard] });
+      // ajout du nouvel id à la liste des ids des taches
+      const newCardId = Array.from(data.columns)
+      newCardId[index].taskIds.push(mongoDbId)
+      console.log(newCardId)
 
-      // ajout de l'id de la tache à la liste des ids des taches de la liste courante
+      // ajout de la nouvelle carte à la liste correspondante
       setData({
         ...data,
-        columns: [...data.columns, data.columns[index].taskIds.push(mongoDbId)],
+        tasks: [...data.tasks, { _id: mongoDbId, cardTitle, cardDescription }],
+        
       });
-
-
-
+      //columns: [...data.columns, data.columns[index].taskIds.push(mongoDbId)]
 
       // fermeture du modale d'ajout de carte
       setShowAddNewCardModal(false);
@@ -123,3 +125,47 @@ const AddNewCardModal = ({
 };
 
 export default AddNewCardModal;
+
+/*
+
+todo: {
+        id: "abc123",
+        name: "AAA",
+        lists: [
+          {
+            id: "def456", 
+            desc: "description",
+            listItems: [
+              {
+                id: "ghj678", 
+                title: "title1",
+                listItemsId: "88abf1"
+              },
+              {
+                id: "poi098",    <-------------------------------------
+                title: "title2",
+                listItemsId: "2a49f25"
+              }
+            ]   
+          },
+          {
+            id: "zxc456", 
+            desc: "description3",
+            listItems: [
+              {
+                id: "qyu678", 
+                title: "title3",
+                listItemsId: "h60bf1"
+              },
+              {
+                id: "p8l098", 
+                title: "title4",
+                listItemsId: "6yuf25"
+              }
+            ]   
+          }
+        ]  
+      }
+    }
+  }
+*/
