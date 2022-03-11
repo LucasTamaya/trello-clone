@@ -1,5 +1,6 @@
 import template from "../utils/template";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import InboxIcon from "@mui/icons-material/Inbox";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,9 +9,17 @@ import mongoObjectId from "../utils/mongodbIdGenerator";
 
 // Composant afin d'ajouter une nouvelle carte à la liste du board
 
-const AddNewCardModal = ({ listId, setCard, setShowAddNewCardModal }) => {
+const AddNewCardModal = ({
+  setShowAddNewCardModal,
+  id,
+  index,
+  data,
+  setData,
+}) => {
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
+
+  const router = useRouter();
 
   const handleNewCard = async (e) => {
     e.preventDefault();
@@ -26,25 +35,37 @@ const AddNewCardModal = ({ listId, setCard, setShowAddNewCardModal }) => {
 
       const newCard = {
         _id: mongoDbId,
-        listId: listId,
         cardTitle: cardTitle,
         cardDescription: cardDescription,
+        index: index,
       };
 
       // ajout de la nouvelle carte à la liste correspondante
-      setCard((prev) => [...prev, newCard]);
+      setData({ ...data, tasks: [...data.tasks, newCard] });
+
+      // ajout de l'id de la tache à la liste des ids des taches de la liste courante
+      setData({
+        ...data,
+        columns: [...data.columns, data.columns[index].taskIds.push(mongoDbId)],
+      });
+
+
+
 
       // fermeture du modale d'ajout de carte
       setShowAddNewCardModal(false);
 
-      const data = await axios.post(`${template}api/createcard`, newCard);
+      const req = await axios.post(
+        `${template}api/createcard/${router.query.id}`,
+        newCard
+      );
 
-      if (data.data.message === "CreateCardError") {
+      if (req.data.message === "CreateCardError") {
         alert("something went wrong");
         setShowAddNewCardModal(false);
       }
 
-      if (data.data.message === "NoError") {
+      if (req.data.message === "NoError") {
         return;
       }
     }

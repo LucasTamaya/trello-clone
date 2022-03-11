@@ -3,12 +3,13 @@ import connectToDatabase from "../../utils/mongodb";
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
-  const { boardTitle, userId, boardColor } = req.body;
+  const { boardTitle, userId, initialData, boardColor } = req.body;
 
   // création et enregistrement du nouveau tableau dans la base de donnée
   const newBoard = await db.collection("boards").insertOne({
     boardTitle: boardTitle,
     userId: userId,
+    initialData: initialData,
     boardColor: boardColor,
   });
 

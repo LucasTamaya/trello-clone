@@ -34,6 +34,11 @@ const CreateBoard = ({ setShowCreateBoard }) => {
       const data = await axios.post(`${template}api/createboard`, {
         boardTitle: input,
         userId: localStorage.getItem("userId"),
+        initialData: {
+          tasks: [],
+          columns: [],
+          columnOrder: [],
+        },
         boardColor: boardColors[randomNb()],
       });
 

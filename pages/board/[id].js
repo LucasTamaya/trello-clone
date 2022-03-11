@@ -9,22 +9,15 @@ import AddNewList from "../../components/AddNewList";
 
 export default function SingleBoard({ boardId }) {
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
 
-  // récupère les listes du board
-  const [boardLists, setBoardLists] = useState([]);
-
+  // récupère toute la data nécessaire au premier montage
   useEffect(() => {
-    setLoading(true);
     useFetch(`${template}api/board`, boardId).then((data) => {
-      console.log(data);
-      setBoardLists(data.data.boardLists);
-      setLoading(false);
+      console.log(data.data.data)
+      setData(data.data.data);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(boardLists);
-  }, [boardLists]);
 
   return (
     <div>
@@ -38,10 +31,8 @@ export default function SingleBoard({ boardId }) {
 
         {!loading && (
           <div className="h-[90vh] p-7 bg-[rgb(235,236,240)] flex items-start gap-x-2 flex-nowrap overflow-x-auto">
-            {!loading && boardLists.length >= 1 && (
-              <Tasks boardLists={boardLists} />
-            )}
-            <AddNewList boardId={boardId} setBoardLists={setBoardLists} />
+            {!loading && data && <Tasks data={data} setData={setData} />}
+            <AddNewList boardId={boardId} data={data} setData={setData} />
           </div>
         )}
       </main>

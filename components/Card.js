@@ -3,10 +3,6 @@ import { Draggable } from "react-beautiful-dnd";
 
 const Card = ({ id, title, description, index }) => {
 
-  console.log(id)
-  console.log(title)
-  console.log(index)
-
   return (
     <div className="mt-2">
       <Draggable draggableId={id} index={index}>
