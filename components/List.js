@@ -11,11 +11,20 @@ import template from "../utils/template";
 // Composant représentant un liste du board
 
 const List = ({ column, taskIds, tasks, index, data, setData }) => {
-  // const [card, setCard] = useState([]);
+  const [tasksList, setTasksList] = useState([]);
 
-  // console.log(column);
-  // console.log("ids taches", taskIds);
-  // console.log("toutes les taches", tasks);
+  useEffect(() => {
+    console.log("re render");
+    const list = tasks.filter((task) => taskIds.includes(task._id));
+    console.log("liste des taches et ordre", list);
+    const newOrder = {};
+    taskIds.forEach((x, index) => (newOrder[x] = index));
+    list.sort((a, b) => {
+      return newOrder[a._id] - newOrder[b._id];
+    });
+    setTasksList(list)
+    // console.log(tasksList);
+  }, [data]);
 
   // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte
   const [showAddNewCardModal, setShowAddNewCardModal] = useState(false);
@@ -37,17 +46,26 @@ const List = ({ column, taskIds, tasks, index, data, setData }) => {
             {!taskIds ? (
               <></>
             ) : (
-              tasks
-                .filter((task) => taskIds.includes(task._id))
-                .map((x, index) => (
-                  <Card
-                    key={x._id}
-                    id={x._id}
-                    title={x.cardTitle}
-                    description={x.cardDescription}
-                    index={index}
-                  />
-                ))
+              // tasks
+              //   .filter((task) => taskIds.includes(task._id))
+              //   .map((x, index) => (
+              //     <Card
+              //       key={x._id}
+              //       id={x._id}
+              //       title={x.cardTitle}
+              //       description={x.cardDescription}
+              //       index={index}
+              //     />
+              //   ))
+              tasksList.map((x, index) => (
+                <Card
+                  key={x._id}
+                  id={x._id}
+                  title={x.cardTitle}
+                  description={x.cardDescription}
+                  index={index}
+                />
+              ))
             )}
             {provided.placeholder}
 
