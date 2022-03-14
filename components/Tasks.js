@@ -1,10 +1,45 @@
 import React from "react";
 import List from "./List";
 import { DragDropContext } from "react-beautiful-dnd";
-import mapOrder from "../utils/mapOrder";
+import { useRouter } from "next/router";
+import axios from "axios";
+import template from "../utils/template";
 
 const Tasks = ({ data, setData }) => {
-  console.log(data);
+  const router = useRouter();
+
+  // fonction afin de mettre à jour la base de donnée lorsqu'on déplace un élément dans une même liste
+  const moveCardSameListDb = async (newColumn, index) => {
+    const req = await axios.post(`${template}api/movecard/samecolumn`, {
+      newColumn: newColumn,
+      index: index,
+      id: router.query.id,
+    });
+
+    if (req.data.message === "MoveCardError") {
+      alert("something went wrong");
+    }
+
+    if (req.data.message === "NoError") {
+      return;
+    }
+  };
+
+  // fonction afin de mettre à jour la base de donnée lorsqu'on déplace un élément dans une même liste
+  const moveCardDifferentListDb = async (newState) => {
+    const req = await axios.post(`${template}api/movecard/differentcolumn`, {
+      newState: newState,
+      id: router.query.id,
+    });
+
+    if (req.data.message === "MoveCardError") {
+      alert("something went wrong");
+    }
+
+    if (req.data.message === "NoError") {
+      return;
+    }
+  };
 
   // fonction qui va gérer le drag and drop des éléments
   const onDragEnd = (result) => {
@@ -32,28 +67,35 @@ const Tasks = ({ data, setData }) => {
 
     // si on déplace un élément dans sa même liste source
     if (start[0]._id === finish[0]._id) {
-      // récupère les ids de la tâche
+      // récupère le tableau des ids des tâches de la liste
       const newTaskIds = Array.from(start[0].taskIds);
 
+      // modification de l'ordre des tâches
       newTaskIds.splice(source.index, 1);
       newTaskIds.splice(destination.index, 0, draggableId);
 
+      // création de la nouvelle liste
       const newColumn = {
         ...start[0],
         taskIds: newTaskIds,
       };
 
+      // récupération de l'index de la liste à modifier
       const index = data.columns.findIndex((x) => x._id === source.droppableId);
 
       const newState = Array.from(data.columns);
+      // modification la liste avec nouvelle liste crée
       newState[index] = newColumn;
 
+      // update du state de la liste source
       setData({ ...data, columns: newState });
+
+      // update au niveau de la base de donnée
+      moveCardSameListDb(newColumn, index);
     }
 
     // si on déplace un élément dans une autre liste
     if (start[0]._id !== finish[0]._id) {
-      console.log("move to another list");
       // récupère la liste des ids des tâches de la liste source
       const newTaskIds = Array.from(start[0].taskIds);
       // supprime l'id correspondant à la tâche qu'on déplace
@@ -78,7 +120,7 @@ const Tasks = ({ data, setData }) => {
         taskIds: destinationTaskIds,
       };
 
-      // récupère l'id de la liste de destination
+      // récupère l'index de la liste de destination
       const destinationIndex = data.columns.findIndex(
         (x) => x._id === destination.droppableId
       );
@@ -92,8 +134,11 @@ const Tasks = ({ data, setData }) => {
       // modification de la liste destination
       newState[destinationIndex] = newDestinationColumn;
 
-      // update du state de la data avec la nouvelle liste source et la nouvelle destination
+      // update du state de la data avec la nouvelle liste source et la nouvelle liste destination
       setData({ ...data, columns: newState });
+
+      // update au niveau de la base de donnée
+      moveCardDifferentListDb(newState)
     }
   };
 
