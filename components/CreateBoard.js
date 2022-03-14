@@ -38,12 +38,9 @@ const CreateBoard = ({ setShowCreateBoard }) => {
         initialData: {
           tasks: [],
           columns: [],
-          columnOrder: [],
         },
         boardColor: boardColors[randomNb()],
       });
-
-      console.log(data);
 
       if (data.data.message === "CreateBoardError") {
         alert("Error, please try again");

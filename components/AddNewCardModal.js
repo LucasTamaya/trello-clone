@@ -6,7 +6,6 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import CloseIcon from "@mui/icons-material/Close";
 import DescriptionIcon from "@mui/icons-material/Description";
 import mongoObjectId from "../utils/mongodbIdGenerator";
-import update from "react-addons-update";
 
 // Composant afin d'ajouter une nouvelle carte à la liste du board
 
@@ -44,7 +43,7 @@ const AddNewCardModal = ({
       // ajout du nouvel id à la liste des ids des taches
       const newCardId = Array.from(data.columns);
       newCardId[index].taskIds.push(mongoDbId);
-      // console.log(newCardId)
+
       // ajout de la nouvelle carte à la liste correspondante
       setData({
         ...data,
@@ -96,7 +95,6 @@ const AddNewCardModal = ({
             onClick={() => setShowAddNewCardModal(false)}
           />
         </div>
-        {/* <p>in list {listTitle}</p> */}
         <div className="flex items-start gap-x-2 mt-7">
           <DescriptionIcon className="text-blue-900" />
           <div className="flex flex-col w-full">
@@ -123,47 +121,3 @@ const AddNewCardModal = ({
 };
 
 export default AddNewCardModal;
-
-/*
-
-todo: {
-        id: "abc123",
-        name: "AAA",
-        lists: [
-          {
-            id: "def456", 
-            desc: "description",
-            listItems: [
-              {
-                id: "ghj678", 
-                title: "title1",
-                listItemsId: "88abf1"
-              },
-              {
-                id: "poi098",    <-------------------------------------
-                title: "title2",
-                listItemsId: "2a49f25"
-              }
-            ]   
-          },
-          {
-            id: "zxc456", 
-            desc: "description3",
-            listItems: [
-              {
-                id: "qyu678", 
-                title: "title3",
-                listItemsId: "h60bf1"
-              },
-              {
-                id: "p8l098", 
-                title: "title4",
-                listItemsId: "6yuf25"
-              }
-            ]   
-          }
-        ]  
-      }
-    }
-  }
-*/

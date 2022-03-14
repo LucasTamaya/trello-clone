@@ -25,7 +25,7 @@ const Tasks = ({ data, setData }) => {
     }
   };
 
-  // fonction afin de mettre à jour la base de donnée lorsqu'on déplace un élément dans une même liste
+  // fonction afin de mettre à jour la base de donnée lorsqu'on déplace un élément dans une liste différente
   const moveCardDifferentListDb = async (newState) => {
     const req = await axios.post(`${template}api/movecard/differentcolumn`, {
       newState: newState,
@@ -58,9 +58,12 @@ const Tasks = ({ data, setData }) => {
       return;
     }
 
+    // récupère la liste source de l'élément à déplacer
     const start = Array.from(
       data.columns.filter((x) => x._id === source.droppableId)
     );
+
+    // récupère la liste de destination dans laquelle on souhaite déplacer l'élément
     const finish = data.columns.filter(
       (x) => x._id === destination.droppableId
     );

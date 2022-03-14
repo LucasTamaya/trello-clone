@@ -14,13 +14,10 @@ const Boards = ({ setShowCreateBoard }) => {
     setLoading(true);
     useFetch(`${template}api/getboards`, localStorage.getItem("userId")).then(
       (data) => {
-        console.log(data);
         setBoards(data.data.userBoards);
         setLoading(false);
       }
     );
-
-    // console.log(boards)
   }, []);
 
   return (

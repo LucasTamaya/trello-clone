@@ -20,6 +20,9 @@ const AddNewList = ({ boardId, data, setData }) => {
       // rénitialisation de l'input
       setInputList("");
 
+      // disparition du modal pour ajouter une liste
+      setShowInput(false);
+
       // création d'un id valide avec mongoDB
       let mongoDbId = mongoObjectId();
 
@@ -30,7 +33,6 @@ const AddNewList = ({ boardId, data, setData }) => {
       };
 
       // ajout de la nouvelle liste au board
-      // setData((prev) => {...prev})
       setData({ ...data, columns: [...data.columns, newList] });
 
       // envoit de la data à l'api

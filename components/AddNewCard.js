@@ -1,6 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
 import { DesignServices } from "@mui/icons-material";
-import { useState, useEffect } from "react";
 
 const AddNewCard = ({ setShowAddNewCardModal }) => {
   return (

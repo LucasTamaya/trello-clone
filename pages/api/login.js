@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     // si aucune erreur avec le pwd
     if (isMatch) {
       // récupère l'id de l'utilisateur
-      const userId = existingEmail[0]._id
+      const userId = existingEmail[0]._id;
       return res.status(200).send({ message: "NoError", userId: userId });
     }
   }

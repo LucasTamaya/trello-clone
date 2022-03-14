@@ -12,16 +12,18 @@ const List = ({ column, taskIds, tasks, index, data, setData }) => {
   const [tasksList, setTasksList] = useState([]);
 
   useEffect(() => {
-    // console.log("re render");
+    // filtre la liste de toutes les tâches afin de récupérer uniquement les tâches présentes dans la liste correspondante
     const list = tasks.filter((task) => taskIds.includes(task._id));
-    // console.log("liste des taches et ordre", list);
+
+    // tri la liste des tâches selon l'ordre des ids
     const newOrder = {};
     taskIds.forEach((x, index) => (newOrder[x] = index));
     list.sort((a, b) => {
       return newOrder[a._id] - newOrder[b._id];
     });
+
+    // update le state qui va contenir les tâches de la liste correpondante
     setTasksList(list);
-    // console.log(tasksList);
   }, [data]);
 
   // permet d'ouvrir et de fermer le modal afin d'ajouter une nouvelle carte

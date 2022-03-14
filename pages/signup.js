@@ -32,7 +32,7 @@ export default function Signup() {
 
     if (data.data.message === "NoError") {
       localStorage.setItem("userId", data.data.userId);
-      router.push("/boards")
+      router.push("/boards");
     }
   };
 
@@ -129,7 +129,10 @@ export default function Signup() {
           Continue
         </button>
         <p className="text-xs text-blue-600 text-center">
-          Already have an account? <Link href="/login"><span className="font-bold cursor-pointer">Log in</span></Link>
+          Already have an account?{" "}
+          <Link href="/login">
+            <span className="font-bold cursor-pointer">Log in</span>
+          </Link>
         </p>
       </form>
       <img

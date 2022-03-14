@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import Header from "../components/Header";
 import BoardsComponent from "../components/BoardsComponent";
 import CreateBoard from "../components/CreateBoard";

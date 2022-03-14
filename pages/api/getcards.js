@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   //   récupère l'id de la liste correspondante
   const { id } = req.query;
 
-  console.log(id)
+  console.log(id);
 
   const cards = await db
     .collection("cards")
@@ -15,12 +15,12 @@ export default async function handler(req, res) {
     .toArray((err, data) => {
       if (err) {
         console.log(err);
-        return res.send({message: "GetCardError"})
+        return res.send({ message: "GetCardError" });
       }
 
       if (!err) {
         // console.log(data);
-        return res.status(200).send({message: "NoError", cardData: data})
+        return res.status(200).send({ message: "NoError", cardData: data });
       }
     });
 }
