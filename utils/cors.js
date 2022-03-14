@@ -1,6 +1,6 @@
 import NextCors from "nextjs-cors";
 
-// // middleware CORS
+// // middle type CORS
 export async function nextCors(req, res) {
   await NextCors(req, res, {
     // Options
