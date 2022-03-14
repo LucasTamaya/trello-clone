@@ -10,10 +10,6 @@ const Tasks = ({ data, setData }) => {
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
-    console.log(destination);
-    console.log(source);
-    console.log(draggableId);
-
     // si on déplace un élément dans une zone non droppable
     if (!destination) {
       return;
@@ -30,7 +26,6 @@ const Tasks = ({ data, setData }) => {
     const start = Array.from(
       data.columns.filter((x) => x._id === source.droppableId)
     );
-    console.log(start);
     const finish = data.columns.filter(
       (x) => x._id === destination.droppableId
     );
@@ -47,60 +42,58 @@ const Tasks = ({ data, setData }) => {
         ...start[0],
         taskIds: newTaskIds,
       };
-      console.log(newColumn);
 
       const index = data.columns.findIndex((x) => x._id === source.droppableId);
 
-      const newState = Array.from(data.columns)
-      newState[index]=newColumn
+      const newState = Array.from(data.columns);
+      newState[index] = newColumn;
 
-      console.log(newState)
+      setData({ ...data, columns: newState });
+    }
 
-      console.log(data)
+    // si on déplace un élément dans une autre liste
+    if (start[0]._id !== finish[0]._id) {
+      console.log("move to another list");
+      // récupère la liste des ids des tâches de la liste source
+      const newTaskIds = Array.from(start[0].taskIds);
+      // supprime l'id correspondant à la tâche qu'on déplace
+      newTaskIds.splice(source.index, 1);
+      // création de la nouvelle liste avec la nouvelle liste d'ids de tâches
+      const newColumn = {
+        ...start[0],
+        taskIds: newTaskIds,
+      };
+      // récupère l'index de la liste à modifier
+      const index = data.columns.findIndex((x) => x._id === source.droppableId);
 
-      setData({...data, columns: newState})
+      // récupère les ids des tâches de la liste destination,
+      const destinationTaskIds = Array.from(finish[0].taskIds);
 
-      // console.log(start[0].taskIds.length)
-      // const nb = start[0].taskIds.length
-      // start[0].taskIds.splice(0, nb)
-      // newTaskIds.map(x => start[0].taskIds.push(x))
-      // start[0].taskIds.push("push work")
+      // ajout de l'id de l'élément à déplacer dans la liste de destination
+      destinationTaskIds.splice(destination.index, 0, draggableId);
 
-      //test d'ajout avec la méthode Arra.from(data)
-      // récupère l'index de la column
-      // const index = data.columns.findIndex((x) => x._id === source.droppableId);
-      // console.log(index);
-      // const newState = Array.from(data.columns);
-      // newState[index].taskIds.splice(0, 1, newTaskIds[0])
-      // console.log(newState[index])
+      // création de la nouvelle liste de destination
+      const newDestinationColumn = {
+        ...finish[0],
+        taskIds: destinationTaskIds,
+      };
 
-      /*
-const [questions, setQuestions] = React.useState(initialState);
+      // récupère l'id de la liste de destination
+      const destinationIndex = data.columns.findIndex(
+        (x) => x._id === destination.droppableId
+      );
 
-const addChoice = (questionId, choice) => {
-    setQuestions(question.map(q => {
-        if(q.question === questionId){
-            return {...q, choices: [...q.choices, choice]}
-        }
-        return q;
-    }))
-};
-      */
+      // copie du tableau des listes
+      const newState = Array.from(data.columns);
 
-      // test d'ajout avec un maping dans le hook
-      // setData({
-      //   ...data,
-      //   columns: [
-      //     ...data.columns,
-      //     data.columns.map((x) => {
-      //       if (x._id === source.droppableId) {
-      //         return { ...x, taskIds: newTaskIds };
-      //       } else {
-      //         return {...x}
-      //       }
-      //     }),
-      //   ],
-      // });
+      // modification de la liste source
+      newState[index] = newColumn;
+
+      // modification de la liste destination
+      newState[destinationIndex] = newDestinationColumn;
+
+      // update du state de la data avec la nouvelle liste source et la nouvelle destination
+      setData({ ...data, columns: newState });
     }
   };
 

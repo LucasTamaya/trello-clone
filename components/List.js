@@ -14,9 +14,9 @@ const List = ({ column, taskIds, tasks, index, data, setData }) => {
   const [tasksList, setTasksList] = useState([]);
 
   useEffect(() => {
-    console.log("re render");
+    // console.log("re render");
     const list = tasks.filter((task) => taskIds.includes(task._id));
-    console.log("liste des taches et ordre", list);
+    // console.log("liste des taches et ordre", list);
     const newOrder = {};
     taskIds.forEach((x, index) => (newOrder[x] = index));
     list.sort((a, b) => {
