@@ -1,9 +1,13 @@
 import connectToDatabase from "../../utils/mongodb";
 import bcrypt from "bcrypt";
+import { nextCors } from "../../utils/cors";
 
 export default async function handler(req, res) {
   // connexion à la base de donnée
   const { db } = await connectToDatabase();
+
+  // CORS middleware
+  await nextCors(req, res);
 
   const { email, password } = req.body;
 

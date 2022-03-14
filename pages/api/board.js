@@ -1,8 +1,12 @@
 import connectToDatabase from "../../utils/mongodb";
 import { ObjectId } from "mongodb";
+import { nextCors } from "../../utils/cors";
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
+
+  // CORS middleware
+  await nextCors(req, res);
 
   //   récupère l'id du board
   const { id } = req.query;
