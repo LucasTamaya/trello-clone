@@ -138,7 +138,7 @@ const Tasks = ({ data, setData }) => {
       setData({ ...data, columns: newState });
 
       // update au niveau de la base de donnée
-      moveCardDifferentListDb(newState)
+      moveCardDifferentListDb(newState);
     }
   };
 

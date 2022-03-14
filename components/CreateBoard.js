@@ -25,7 +25,8 @@ const CreateBoard = ({ setShowCreateBoard }) => {
   };
 
   //   fonction qui envoit la data à l'API afin de créer le nouveau tableau
-  const handleCreateBoard = async () => {
+  const handleCreateBoard = async (e) => {
+    e.preventDefault();
     if (input === "") {
       return;
     }
@@ -79,34 +80,36 @@ const CreateBoard = ({ setShowCreateBoard }) => {
           alt="create board image"
           className="mx-auto mb-8"
         />
-        <label className="text-blue-900 font-bold">
-          Board title<span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={input}
-          className={`outline-0 border-2 p-1 w-full rounded bg-gray-100/70 ${
-            !isFulfilled ? "border-red-500" : "border-[#2aa10f]"
-          }`}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <p
-          className={`text-blue-900 mb-5 transition ease ${
-            isFulfilled && "opacity-0"
-          }`}
-        >
-          👋 Board title is required
-        </p>
-        <button
-          className={`w-full p-1 rounded transition ease ${
-            !isFulfilled
-              ? "bg-gray-100/70 text-gray-400 cursor-pointer cursor-not-allowed"
-              : "bg-blue-600 text-white cursor-pointer"
-          }`}
-          onClick={handleCreateBoard}
-        >
-          Create
-        </button>
+        <form onSubmit={handleCreateBoard}>
+          <label className="text-blue-900 font-bold">
+            Board title<span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={input}
+            className={`outline-0 border-2 p-1 w-full rounded bg-gray-100/70 ${
+              !isFulfilled ? "border-red-500" : "border-[#2aa10f]"
+            }`}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <p
+            className={`text-blue-900 mb-5 transition ease ${
+              isFulfilled && "opacity-0"
+            }`}
+          >
+            👋 Board title is required
+          </p>
+          <button
+            type="submut"
+            className={`w-full p-1 rounded transition ease ${
+              !isFulfilled
+                ? "bg-gray-100/70 text-gray-400 cursor-pointer cursor-not-allowed"
+                : "bg-blue-600 text-white cursor-pointer"
+            }`}
+          >
+            Create
+          </button>
+        </form>
       </div>
     </div>
   );

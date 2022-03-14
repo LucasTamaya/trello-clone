@@ -5,8 +5,6 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddNewCard from "./AddNewCard";
 import { useState, useEffect } from "react";
 import AddNewCardModal from "./AddNewCardModal";
-import useFetch from "../hooks/useFetch";
-import template from "../utils/template";
 
 // Composant représentant un liste du board
 
@@ -22,7 +20,7 @@ const List = ({ column, taskIds, tasks, index, data, setData }) => {
     list.sort((a, b) => {
       return newOrder[a._id] - newOrder[b._id];
     });
-    setTasksList(list)
+    setTasksList(list);
     // console.log(tasksList);
   }, [data]);
 
@@ -46,17 +44,6 @@ const List = ({ column, taskIds, tasks, index, data, setData }) => {
             {!taskIds ? (
               <></>
             ) : (
-              // tasks
-              //   .filter((task) => taskIds.includes(task._id))
-              //   .map((x, index) => (
-              //     <Card
-              //       key={x._id}
-              //       id={x._id}
-              //       title={x.cardTitle}
-              //       description={x.cardDescription}
-              //       index={index}
-              //     />
-              //   ))
               tasksList.map((x, index) => (
                 <Card
                   key={x._id}

@@ -24,7 +24,7 @@ const Boards = ({ setShowCreateBoard }) => {
   }, []);
 
   return (
-    <main className="max-w-6xl mx-auto mt-10 p-3">
+    <main className="max-w-6xl mx-auto p-10 p-3 h-[90vh] bg-white">
       {/* Pendant le chargement de la data */}
       {loading && (
         <div className="absolute top-0 left-0 w-screen h-screen flex justify-center items-center">
@@ -42,7 +42,7 @@ const Boards = ({ setShowCreateBoard }) => {
 
           <ul className="mx-auto mt-5 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
             {boards.map((x) => (
-              <Link href={`/board/${x._id}`}>
+              <Link key={x._id} href={`/board/${x._id}`}>
                 <li
                   className={`${x.boardColor} w-44 p-4 h-24 text-blue-900 font-bold rounded flex items-start md:w-52 md:h-28 cursor-pointer`}
                 >

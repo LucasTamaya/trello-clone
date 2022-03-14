@@ -42,14 +42,13 @@ const AddNewCardModal = ({
       };
 
       // ajout du nouvel id à la liste des ids des taches
-      const newCardId = Array.from(data.columns)
-      newCardId[index].taskIds.push(mongoDbId)
+      const newCardId = Array.from(data.columns);
+      newCardId[index].taskIds.push(mongoDbId);
       // console.log(newCardId)
       // ajout de la nouvelle carte à la liste correspondante
       setData({
         ...data,
         tasks: [...data.tasks, { _id: mongoDbId, cardTitle, cardDescription }],
-        
       });
       //columns: [...data.columns, data.columns[index].taskIds.push(mongoDbId)]
 
