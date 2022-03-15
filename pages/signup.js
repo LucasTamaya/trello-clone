@@ -6,9 +6,15 @@ import signupValidation from "../validationSchema/signupValidation";
 import axios from "axios";
 import template from "../utils/template";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import AuthLoading from "../components/AuthLoading";
 
 export default function Signup() {
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   // import des composants afin de vérifier nos formulaires
   const {
@@ -20,6 +26,8 @@ export default function Signup() {
   });
 
   const handleRegister = async (input) => {
+    setLoading(true);
+    setErrorMessage("");
     const data = await axios.post(`${template}api/signup`, {
       email: input.email,
       name: input.name,
@@ -27,12 +35,14 @@ export default function Signup() {
     });
 
     if (data.data.message === "ExistingEmailError") {
-      alert("email existant");
+      setErrorMessage("This email already exists");
+      setLoading(false);
     }
 
     if (data.data.message === "NoError") {
       localStorage.setItem("userId", data.data.userId);
       router.push("/boards");
+      setLoading(false);
     }
   };
 
@@ -124,9 +134,11 @@ export default function Signup() {
         </p>
         <button
           type="submit"
-          className="bg-gray-200 p-2 rounded font-bold text-gray-500 transition ease hover:bg-blue-600 hover:text-white"
+          className={`h-10 flex justify-center items-center p-2 rounded font-bold text-gray-500 transition ease hover:bg-blue-600 hover:text-white ${
+            !loading ? "bg-gray-200" : "bg-blue-600"
+          }`}
         >
-          Continue
+          {!loading ? <div>Continue</div> : <AuthLoading />}
         </button>
         <p className="text-xs text-blue-600 text-center">
           Already have an account?{" "}
@@ -134,6 +146,9 @@ export default function Signup() {
             <span className="font-bold cursor-pointer">Log in</span>
           </Link>
         </p>
+        {errorMessage && (
+          <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+        )}
       </form>
       <img
         src="/login-right-stock.png"

@@ -6,9 +6,13 @@ import loginValidation from "../validationSchema/loginValidation";
 import axios from "axios";
 import template from "../utils/template";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import AuthLoading from "../components/AuthLoading";
 
 export default function Login() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // import des composants afin de vérifier nos formulaires
   const {
@@ -20,18 +24,22 @@ export default function Login() {
   });
 
   const handleRegister = async (input) => {
+    setLoading(true);
+    setErrorMessage("");
     const data = await axios.post(`${template}api/login`, {
       email: input.email,
       password: input.password,
     });
 
     if (data.data.message === "LoginError") {
-      alert("Email ou mot de passe incorrect");
+      setErrorMessage("Invalid email or password");
+      setLoading(false);
     }
 
     if (data.data.message === "NoError") {
       localStorage.setItem("userId", data.data.userId);
       router.push("/boards");
+      setLoading(false);
     }
   };
 
@@ -103,9 +111,9 @@ export default function Login() {
         </p>
         <button
           type="submit"
-          className="bg-[#2aa10f] p-2 rounded font-bold text-white transition ease hover:bg-[#378805]"
+          className="bg-[#2aa10f] flex justify-center items-center h-10 p-2 rounded font-bold text-white transition ease hover:bg-[#378805]"
         >
-          Log in
+          {!loading ? <div>Log in</div> : <AuthLoading />}
         </button>
         <p className="text-xs text-blue-600 text-center">
           Can't log in?{" "}
@@ -115,6 +123,9 @@ export default function Login() {
             </span>
           </Link>
         </p>
+        {errorMessage && (
+          <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+        )}
       </form>
       <img
         src="/login-right-stock.png"

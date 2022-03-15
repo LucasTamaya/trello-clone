@@ -71,9 +71,9 @@ const AddNewCardModal = ({
   };
 
   return (
-    <div className="absolute left-0 top-0 w-screen h-screen flex justify-center items-center bg-gray-200/70">
+    <div className="absolute left-0 top-0 w-screen h-screen p-7 flex justify-center items-center bg-gray-200/70">
       <form
-        className="w-80 h-fit bg-white p-4 lg:w-[600px] rounded"
+        className="w-full max-w-[500px] h-fit bg-white p-4 rounded"
         onSubmit={handleNewCard}
       >
         <div className="flex items-start justify-between">

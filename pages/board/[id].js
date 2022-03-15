@@ -10,6 +10,7 @@ import BoardHeader from "../../components/BoardHeader";
 export default function SingleBoard({ boardId }) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [showCardDetails, setShowCardDetails] = useState(false);
 
   // récupère toute la data nécessaire au premier montage
   useEffect(() => {

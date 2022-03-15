@@ -58,7 +58,7 @@ const AddNewList = ({ boardId, data, setData }) => {
       <div className="flex items-center w-60">
         <label
           htmlFor="inputList"
-          className={`flex items-center p-2 bg-gray-400/40 gap-x-2 w-fit rounded text-blue-900 cursor-pointer hover:bg-gray-400 ${
+          className={`flex items-center p-2 bg-gray-400/40 gap-x-2 w-fit rounded text-blue-900 cursor-pointer hover:bg-gray-400/60 ${
             showInput && "hidden"
           }`}
           onClick={() => setShowInput(true)}

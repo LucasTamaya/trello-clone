@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import connectToDatabase from "../../utils/mongodb";
-import { nextCors } from "../../utils/cors";
+import connectToDatabase from "../../../utils/mongodb";
+import { nextCors } from "../../../utils/cors";
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();

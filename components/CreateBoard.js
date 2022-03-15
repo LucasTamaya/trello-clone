@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import template from "../utils/template";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import AuthLoading from "./AuthLoading";
 
 const CreateBoard = ({ setShowCreateBoard }) => {
   const [input, setInput] = useState("");
   const [isFulfilled, setIsFulfilled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -27,6 +29,7 @@ const CreateBoard = ({ setShowCreateBoard }) => {
   //   fonction qui envoit la data à l'API afin de créer le nouveau tableau
   const handleCreateBoard = async (e) => {
     e.preventDefault();
+    setLoading(true)
     if (input === "") {
       return;
     }
@@ -48,6 +51,7 @@ const CreateBoard = ({ setShowCreateBoard }) => {
 
       if (data.data.message === "NoError") {
         router.push(`/board/${data.data.boardId}`);
+        setLoading(false)
       }
     }
   };
@@ -98,13 +102,13 @@ const CreateBoard = ({ setShowCreateBoard }) => {
           </p>
           <button
             type="submut"
-            className={`w-full p-1 rounded transition ease ${
+            className={`w-full h-10 flex justify-center items-center p-1 rounded transition ease ${
               !isFulfilled
                 ? "bg-gray-100/70 text-gray-400 cursor-pointer cursor-not-allowed"
                 : "bg-blue-600 text-white cursor-pointer"
             }`}
           >
-            Create
+            {!loading ? <div>Create</div> : <AuthLoading />}
           </button>
         </form>
       </div>
